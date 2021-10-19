@@ -45,7 +45,7 @@ RUN /frontend-mem-nag.sh
 
 COPY superset-frontend/package*.json ./
 
-RUN npm ci
+RUN npm ci --registry https://registry.npmmirror.com/
 
 COPY ./superset-frontend ./
 
@@ -68,6 +68,9 @@ ENV LANG=C.UTF-8 \
 
 RUN mkdir -p ${PYTHONPATH} \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
+    && sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list \
+    && sed -i "s/security.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list \
+    && sed -i "s/httpredir.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list \
     && apt-get update -q \
     && apt-get install -yq --no-install-recommends \
         build-essential \
@@ -123,13 +126,13 @@ RUN apt-get update -q \
         libx11-xcb1 \
         libasound2 \
         libxtst6 \
-        wget \
+        wget
     # Install GeckoDriver WebDriver
-    && wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz -O - | tar xfz - -C /usr/local/bin \
-    # Install Firefox
-    && wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 -O - | tar xfj - -C /opt \
-    && ln -s /opt/firefox/firefox /usr/local/bin/firefox \
-    && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/* && apt-get clean
+    # && wget https://github.com/mozilla/geckodriver/releases/download/${GECKODRIVER_VERSION}/geckodriver-${GECKODRIVER_VERSION}-linux64.tar.gz -O - | tar xfz - -C /usr/local/bin \
+    # # Install Firefox
+    # && wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/${FIREFOX_VERSION}/linux-x86_64/en-US/firefox-${FIREFOX_VERSION}.tar.bz2 -O - | tar xfj - -C /opt \
+    # && ln -s /opt/firefox/firefox /usr/local/bin/firefox \
+    # && apt-get autoremove -yqq --purge wget && rm -rf /var/lib/apt/lists/* && apt-get clean
 
 COPY ./requirements/*.txt ./docker/requirements-*.txt/ /app/requirements/
 # Cache everything for dev purposes...
@@ -143,5 +146,7 @@ USER superset
 FROM lean AS ci
 
 COPY --chown=superset --chmod=755 ./docker/*.sh /app/docker/
+
+COPY ./overrides/reflection.py /usr/local/lib/python3.9/site-packages/sqlalchemy/dialects/mysql/reflection.py
 
 CMD ["/app/docker/docker-ci.sh"]
