@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-x-superset-image: &superset-image apachesuperset.docker.scarf.sh/apache/superset:${TAG:-latest-dev}
+x-superset-image: &superset-image registry.cn-zhangjiakou.aliyuncs.com/meidengsuperset.docker.scarf.sh/apache/superset:${TAG:-latest}
 x-superset-depends-on: &superset-depends-on
   - db
   - redis
@@ -26,20 +26,19 @@ x-superset-volumes:
 version: "3.7"
 services:
   redis:
-    image: redis:7
+    image: redis:latest
     container_name: superset_cache
     restart: unless-stopped
     volumes:
       - redis:/data
 
   db:
-    env_file: docker/.env-non-dev
-    image: postgres:14
+    env_file: docker/.env
+    image: postgres:10
     container_name: superset_db
     restart: unless-stopped
     volumes:
       - db_home:/var/lib/postgresql/data
-      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   superset:
     env_file: docker/.env-non-dev
@@ -61,8 +60,6 @@ services:
     depends_on: *superset-depends-on
     user: "root"
     volumes: *superset-volumes
-    healthcheck:
-      disable: true
 
   superset-worker:
     image: *superset-image
@@ -73,12 +70,6 @@ services:
     depends_on: *superset-depends-on
     user: "root"
     volumes: *superset-volumes
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "celery -A superset.tasks.celery_app:app inspect ping -d celery@$$HOSTNAME",
-        ]
 
   superset-worker-beat:
     image: *superset-image
@@ -89,8 +80,6 @@ services:
     depends_on: *superset-depends-on
     user: "root"
     volumes: *superset-volumes
-    healthcheck:
-      disable: true
 
 volumes:
   superset_home:
