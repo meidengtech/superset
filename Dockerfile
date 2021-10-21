@@ -81,6 +81,7 @@ RUN mkdir -p ${PYTHONPATH} \
         libpq-dev \
         libecpg-dev \
         libldap2-dev \
+        python-dev libldap2-dev libsasl2-dev libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --chown=superset:superset ./requirements/*.txt  requirements/
@@ -90,7 +91,8 @@ COPY --chown=superset:superset superset-frontend/package.json superset-frontend/
 
 RUN mkdir -p superset/static \
     && touch superset/static/version_info.json \
-    && pip install --no-cache-dir -r requirements/local.txt
+    && pip install --no-cache-dir -r requirements/local.txt\
+    && pip install python-ldap
 
 COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
 ## Lastly, let's install superset itself
