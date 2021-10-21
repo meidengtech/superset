@@ -32,6 +32,7 @@ RUN mkdir /app \
             libpq-dev \
             libsasl2-dev \
             libecpg-dev \
+            python-dev libldap2-dev libsasl2-dev libssl-dev \
         && rm -rf /var/lib/apt/lists/*
 
 # First, we just wanna install requirements, which will allow us to utilize the cache
@@ -42,8 +43,8 @@ COPY superset-frontend/package.json /app/superset-frontend/
 RUN cd /app \
     && mkdir -p superset/static \
     && touch superset/static/version_info.json \
-    && pip install --no-cache -r requirements/local.txt
-
+    && pip install --no-cache -r requirements/local.txt \
+    && pip install python-ldap
 
 ######################################################################
 # Node stage to deal with static asset construction
@@ -98,6 +99,7 @@ RUN mkdir -p ${PYTHONPATH} \
             default-libmysqlclient-dev \
             libsasl2-modules-gssapi-mit \
             libpq-dev \
+            python-dev libldap2-dev libsasl2-dev libssl-dev \
         && rm -rf /var/lib/apt/lists/*
 
 COPY --from=superset-py /usr/local/lib/python3.7/site-packages/ /usr/local/lib/python3.7/site-packages/
