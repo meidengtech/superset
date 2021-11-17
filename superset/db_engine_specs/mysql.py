@@ -139,14 +139,14 @@ class MySQLEngineSpec(BaseEngineSpec, BasicParametersMixin):
         "INTERVAL (HOUR({col})*60 + MINUTE({col})) MINUTE)",
         TimeGrain.HOUR: "DATE_ADD(DATE({col}), INTERVAL HOUR({col}) HOUR)",
         TimeGrain.DAY: "DATE({col})",
-        TimeGrain.WEEK: "DATE(DATE_SUB({col}, INTERVAL DAYOFWEEK({col}) - 1 DAY))",
+        TimeGrain.WEEK: "DATE(DATE_SUB({col}, "
+        "INTERVAL DAYOFWEEK(DATE_SUB({col}, "
+        "INTERVAL 1 DAY)) - 1 DAY))",
         TimeGrain.MONTH: "DATE(DATE_SUB({col}, INTERVAL DAYOFMONTH({col}) - 1 DAY))",
         TimeGrain.QUARTER: "MAKEDATE(YEAR({col}), 1) "
         "+ INTERVAL QUARTER({col}) QUARTER - INTERVAL 1 QUARTER",
         TimeGrain.YEAR: "DATE(DATE_SUB({col}, INTERVAL DAYOFYEAR({col}) - 1 DAY))",
-        TimeGrain.WEEK_STARTING_MONDAY: "DATE(DATE_SUB({col}, "
-        "INTERVAL DAYOFWEEK(DATE_SUB({col}, "
-        "INTERVAL 1 DAY)) - 1 DAY))",
+        TimeGrain.WEEK_STARTING_MONDAY: "DATE(DATE_SUB({col}, " "INTERVAL DAYOFWEEK({col}) - 1 DAY))",
     }
 
     type_code_map: dict[int, str] = {}  # loaded from get_datatype only if needed
