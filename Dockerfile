@@ -92,7 +92,7 @@ COPY --chown=superset:superset superset-frontend/package.json superset-frontend/
 RUN mkdir -p superset/static \
     && touch superset/static/version_info.json \
     && pip install --no-cache-dir -r requirements/local.txt\
-    && pip install python-ldap
+    && pip install python-ldap gevent
 
 COPY --chown=superset:superset --from=superset-node /app/superset/static/assets superset/static/assets
 ## Lastly, let's install superset itself
