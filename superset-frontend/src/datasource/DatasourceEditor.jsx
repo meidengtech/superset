@@ -662,7 +662,7 @@ class DatasourceEditor extends React.PureComponent {
           description={t('Owners of the dataset')}
           control={
             <SelectAsyncControl
-              dataEndpoint="api/v1/dataset/related/owners"
+              dataEndpoint="api/v1/dataset/related/owners?q=(page_size:2000)"
               multi
               mutator={data =>
                 data.result.map(pk => ({
