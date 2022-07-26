@@ -28,6 +28,9 @@ from flask_caching.backends.filesystemcache import FileSystemCache
 
 logger = logging.getLogger()
 
+AUDIT_ENABLED = os.getenv("AUDIT_ENABLED", "false")
+AUDIT_URL = os.getenv("AUDIT_URL", "http://127.0.0.1:8088/api/push/data")
+
 DATABASE_DIALECT = os.getenv("DATABASE_DIALECT")
 DATABASE_USER = os.getenv("DATABASE_USER")
 DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")

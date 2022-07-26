@@ -23,7 +23,7 @@ import time
 from collections import defaultdict
 from typing import Any, Callable, cast, NamedTuple, Optional, TYPE_CHECKING, Union
 
-from flask import current_app, Flask, g, Request
+from flask import current_app, Flask, g, Request, request
 from flask_appbuilder import Model
 from flask_appbuilder.security.sqla.manager import SecurityManager
 from flask_appbuilder.security.sqla.models import (
@@ -52,7 +52,7 @@ from sqlalchemy.orm import eagerload, Session
 from sqlalchemy.orm.mapper import Mapper
 from sqlalchemy.orm.query import Query as SqlaQuery
 
-from superset import sql_parse
+from superset import sql_parse, config
 from superset.constants import RouteMethod
 from superset.errors import ErrorLevel, SupersetError, SupersetErrorType
 from superset.exceptions import (
@@ -75,6 +75,7 @@ from superset.utils.core import (
 )
 from superset.utils.filters import get_dataset_access_filters
 from superset.utils.urls import get_url_host
+from superset.utils.data_audit import DataAudit
 
 if TYPE_CHECKING:
     from superset.common.query_context import QueryContext
@@ -2426,3 +2427,9 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
         return current_app.config["AUTH_ROLE_ADMIN"] in [
             role.name for role in self.get_user_roles()
         ]
+    
+    @staticmethod
+    def before_request():
+        SecurityManager.before_request()
+        if hasattr(g.user, "username") and config.AUDIT_ENABLED == "true":
+            DataAudit(request).push_to_data_audit(g.user.username)
