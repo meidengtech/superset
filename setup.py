@@ -111,6 +111,7 @@ setup(
         "tabulate==0.8.9",
         "typing-extensions>=3.7.4.3,<4",  # needed to support typing.Literal on py37
         "wtforms-json",
+        "requests",
     ],
     extras_require={
         "athena": ["pyathena>=1.10.8,<1.11"],

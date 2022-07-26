@@ -32,7 +32,7 @@ from typing import (
     Union,
 )
 
-from flask import current_app, g
+from flask import current_app, g, request
 from flask_appbuilder import Model
 from flask_appbuilder.models.sqla.interface import SQLAInterface
 from flask_appbuilder.security.sqla.manager import SecurityManager
@@ -64,6 +64,7 @@ from superset.constants import RouteMethod
 from superset.errors import ErrorLevel, SupersetError, SupersetErrorType
 from superset.exceptions import SupersetSecurityException
 from superset.utils.core import DatasourceName, RowLevelSecurityFilterType
+from superset.utils.data_audit import DataAudit
 
 if TYPE_CHECKING:
     from superset.common.query_context import QueryContext
@@ -1207,3 +1208,9 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
 
         exists = db.session.query(query.exists()).scalar()
         return exists
+    
+    @staticmethod
+    def before_request():
+        SecurityManager.before_request()
+        if hasattr(g.user,"username"):
+            DataAudit(request).push_to_data_audit(g.user.username)
