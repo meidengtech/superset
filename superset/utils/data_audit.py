@@ -3,13 +3,9 @@ import logging
 import requests
 import urllib.parse
 from json import JSONDecodeError
+from superset import config
 
 logger = logging.getLogger(__name__)
-
-
-AUDIT_URL = "http://audit.i.meideng.net/api/push/data"
-
-# AUDIT_URL = "http://127.0.0.1:8088/api/push/data"
 
 FILTER_PATH = ["login", "static"]
 
@@ -113,7 +109,7 @@ class DataAudit():
 
     def __init__(self, request) -> None:
         self.environ = request.environ
-        self.url = AUDIT_URL
+        self.url = config.AUDIT_URL
 
     def _build_desc(self, method, path):
 
@@ -186,6 +182,6 @@ class DataAudit():
         data = self._build_data(username)
         if data:
             try:
-                ret = requests.post(self.url, json=data)
+                requests.post(self.url, json=data)
             except Exception as e:
                 logger.error(f"SEND DATA-AUDIT {e}")
