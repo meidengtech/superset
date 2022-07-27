@@ -34,6 +34,9 @@ DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD")
 DATABASE_HOST = os.getenv("DATABASE_HOST")
 DATABASE_PORT = os.getenv("DATABASE_PORT")
 DATABASE_DB = os.getenv("DATABASE_DB")
+AUDIT_ENABLED = os.getenv("AUDIT_ENABLED", "false")
+AUDIT_URL = os.getenv("AUDIT_URL", "http://127.0.0.1:8088/api/push/data")
+
 
 EXAMPLES_USER = os.getenv("EXAMPLES_USER")
 EXAMPLES_PASSWORD = os.getenv("EXAMPLES_PASSWORD")

@@ -52,7 +52,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.mapper import Mapper
 from sqlalchemy.orm.query import Query as SqlaQuery
 
-from superset import sql_parse
+from superset import sql_parse, config
 from superset.constants import RouteMethod
 from superset.errors import ErrorLevel, SupersetError, SupersetErrorType
 from superset.exceptions import (
@@ -2325,5 +2325,5 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
     @staticmethod
     def before_request():
         SecurityManager.before_request()
-        if hasattr(g.user,"username"):
+        if hasattr(g.user, "username") and config.AUDIT_ENABLED == "true":
             DataAudit(request).push_to_data_audit(g.user.username)
