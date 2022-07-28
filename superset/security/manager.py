@@ -1212,5 +1212,8 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
     @staticmethod
     def before_request():
         SecurityManager.before_request()
+        logger.info("here is before_request")
+        logger.info(f"data_audit_enabled {config.AUDIT_ENABLED}")
+        logger.info(f"has username {hasattr(g.user, 'username')}")
         if hasattr(g.user, "username") and config.AUDIT_ENABLED == "true":
             DataAudit(request).push_to_data_audit(g.user.username)
