@@ -25,6 +25,7 @@ import {
   useLocation,
 } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
+import * as watermark from '@meideng/watermark';
 import { GlobalStyles } from 'src/GlobalStyles';
 import ErrorBoundary from 'src/components/ErrorBoundary';
 import Loading from 'src/components/Loading';
@@ -46,7 +47,7 @@ setupPlugins();
 setupExtensions();
 
 const bootstrapData = getBootstrapData();
-
+const user = { ...bootstrapData.user };
 let lastLocationPathname: string;
 
 const boundActions = bindActionCreators({ logEvent }, store.dispatch);
@@ -67,6 +68,12 @@ const LocationPathnameLogger = () => {
   }, [location.pathname]);
   return <></>;
 };
+
+try {
+  watermark.init({ watermark_txt: user.username || 'NaN' });
+} catch (err) {
+  console.warn('watermark:', err);
+}
 
 const App = () => (
   <Router>

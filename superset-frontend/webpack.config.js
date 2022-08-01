@@ -343,6 +343,8 @@ const config = {
             path.resolve(__dirname, p),
           ), // redundant but required for windows
           /@encodable/,
+          path.resolve(__dirname, './src'),
+          path.resolve(__dirname, './plugins'),
         ],
         use: [babelLoader],
       },
