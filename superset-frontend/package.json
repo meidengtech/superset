@@ -83,6 +83,7 @@
     "@emotion/babel-preset-css-prop": "^11.2.0",
     "@emotion/cache": "^11.4.0",
     "@emotion/react": "^11.4.1",
+    "@meideng/watermark": "^2.4.0",
     "@emotion/styled": "^11.3.0",
     "@fontsource/inter": "^4.0.0",
     "@reduxjs/toolkit": "^1.9.3",
