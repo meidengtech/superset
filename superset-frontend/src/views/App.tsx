@@ -23,6 +23,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { QueryParamProvider } from 'use-query-params';
+import * as watermark from '@meideng/watermark'
 import { initFeatureFlags } from 'src/featureFlags';
 import { ThemeProvider } from '@superset-ui/core';
 import { DynamicPluginProvider } from 'src/components/DynamicPlugins';
@@ -65,6 +66,13 @@ const RootContextProviders: React.FC = ({ children }) => (
     </ReduxProvider>
   </ThemeProvider>
 );
+
+try {
+  watermark.init({ watermark_txt: user.username || 'NaN' })
+} catch (err) {
+  console.warn('watermark:', err)
+}
+
 
 const App = () => (
   <Router>

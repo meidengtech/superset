@@ -349,6 +349,8 @@ const config = {
           /superset-ui.*\/src/,
           new RegExp(`${APP_DIR}/.storybook`),
           /@encodable/,
+          path.resolve(__dirname, './src'),
+          path.resolve(__dirname, './plugins'),
         ],
         use: [babelLoader],
       },
