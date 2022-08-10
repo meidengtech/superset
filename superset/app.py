@@ -34,6 +34,7 @@ def create_app() -> Flask:
         app.config.from_object(config_module)
 
         app_initializer = app.config.get("APP_INITIALIZER", SupersetAppInitializer)(app)
+        logger.info("superset start init app")
         app_initializer.init_app()
 
         return app
