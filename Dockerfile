@@ -45,7 +45,7 @@ RUN /frontend-mem-nag.sh
 
 COPY superset-frontend/package*.json ./
 
-RUN npm ci --registry https://registry.npmmirror.com/
+RUN npm ci --registry https://npm.corp.meideng.net/
 
 COPY ./superset-frontend ./
 
