@@ -125,7 +125,6 @@ RoleModelView.related_views = []
 class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
     SecurityManager
 ):
-    log_test_tag = True
     userstatschartview = None
     READ_ONLY_MODEL_VIEWS = {"Database", "DruidClusterModelView", "DynamicPlugin"}
 
@@ -1213,8 +1212,5 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
     @staticmethod
     def before_request():
         SecurityManager.before_request()
-        logger.info("here is before_request")
-        logger.info(f"data_audit_enabled {config.AUDIT_ENABLED}")
-        logger.info(f"has username {hasattr(g.user, 'username')}")
         if hasattr(g.user, "username") and config.AUDIT_ENABLED == "true":
             DataAudit(request).push_to_data_audit(g.user.username)

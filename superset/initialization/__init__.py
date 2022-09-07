@@ -574,7 +574,6 @@ class SupersetAppInitializer:
         self.configure_cache()
 
         with self.superset_app.app_context():
-            logger.info("superset start init_app_in_ctx")
             self.init_app_in_ctx()
 
         self.post_init()
@@ -603,9 +602,8 @@ class SupersetAppInitializer:
     def configure_fab(self) -> None:
         if self.config["SILENCE_FAB"]:
             logging.getLogger("flask_appbuilder").setLevel(logging.ERROR)
-        logger.info("superset start configure_fab")
+
         custom_sm = self.config["CUSTOM_SECURITY_MANAGER"] or SupersetSecurityManager
-        logger.info("SupersetSecurityManager has log_test_tag %s " % hasattr(custom_sm,"log_test_tag"))
         if not issubclass(custom_sm, SupersetSecurityManager):
             raise Exception(
                 """Your CUSTOM_SECURITY_MANAGER must now extend SupersetSecurityManager,
