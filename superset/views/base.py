@@ -166,6 +166,7 @@ def generate_download_headers(
     extension: str, filename: Optional[str] = None
 ) -> Dict[str, Any]:
     filename = filename if filename else datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = "【敏感禁传播】" + filename
     content_disp = f"attachment; filename={filename}.{extension}"
     headers = {"Content-Disposition": content_disp}
     return headers
