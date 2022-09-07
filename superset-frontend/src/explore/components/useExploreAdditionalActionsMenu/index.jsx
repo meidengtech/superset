@@ -316,12 +316,6 @@ export const useExploreAdditionalActionsMenu = (
             {t('Export to .JSON')}
           </Menu.Item>
           <Menu.Item
-            key={MENU_KEYS.DOWNLOAD_AS_IMAGE}
-            icon={<Icons.FileImageOutlined css={iconReset} />}
-          >
-            {t('Download as image')}
-          </Menu.Item>
-          <Menu.Item
             key={MENU_KEYS.EXPORT_TO_XLSX}
             icon={<Icons.FileOutlined css={iconReset} />}
           >

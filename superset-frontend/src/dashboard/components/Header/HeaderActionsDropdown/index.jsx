@@ -311,14 +311,6 @@ class HeaderActionsDropdown extends React.PureComponent {
             />
           </Menu.Item>
         )}
-        {!editMode && (
-          <Menu.Item
-            key={MENU_KEYS.DOWNLOAD_AS_IMAGE}
-            onClick={this.handleMenuClick}
-          >
-            {t('Download as image')}
-          </Menu.Item>
-        )}
         {userCanShare && (
           <Menu.SubMenu
             key={MENU_KEYS.SHARE_DASHBOARD}

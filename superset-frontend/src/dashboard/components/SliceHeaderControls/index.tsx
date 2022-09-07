@@ -517,13 +517,6 @@ const SliceHeaderControls = (props: SliceHeaderControlsPropsWithRouter) => {
                 </Menu.Item>
               </>
             )}
-
-          <Menu.Item
-            key={MENU_KEYS.DOWNLOAD_AS_IMAGE}
-            icon={<Icons.FileImageOutlined css={dropdownIconsStyles} />}
-          >
-            {t('Download as image')}
-          </Menu.Item>
         </Menu.SubMenu>
       )}
     </Menu>
