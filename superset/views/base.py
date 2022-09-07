@@ -24,6 +24,7 @@ import traceback
 from datetime import datetime
 from importlib.resources import files
 from typing import Any, Callable, cast
+from urllib import parse
 
 import simplejson as json
 import yaml
@@ -183,6 +184,7 @@ def generate_download_headers(
     extension: str, filename: str | None = None
 ) -> dict[str, Any]:
     filename = filename if filename else datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = parse.quote("【敏感禁传播】".encode("utf-8")) + filename
     content_disp = f"attachment; filename={filename}.{extension}"
     headers = {"Content-Disposition": content_disp}
     return headers
