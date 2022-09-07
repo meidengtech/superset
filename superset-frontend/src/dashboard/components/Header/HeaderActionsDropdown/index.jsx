@@ -28,7 +28,6 @@ import {
 import { Menu } from 'src/components/Menu';
 import { URL_PARAMS } from 'src/constants';
 import ShareMenuItems from 'src/dashboard/components/menu/ShareMenuItems';
-import DownloadMenuItems from 'src/dashboard/components/menu/DownloadMenuItems';
 import CssEditor from 'src/dashboard/components/CssEditor';
 import RefreshIntervalModal from 'src/dashboard/components/RefreshIntervalModal';
 import SaveModal from 'src/dashboard/components/SaveModal';
@@ -293,19 +292,6 @@ class HeaderActionsDropdown extends React.PureComponent {
             />
           </Menu.Item>
         )}
-        <Menu.SubMenu
-          key={MENU_KEYS.DOWNLOAD_DASHBOARD}
-          disabled={isLoading}
-          title={t('Download')}
-          logEvent={this.props.logEvent}
-        >
-          <DownloadMenuItems
-            pdfMenuItemTitle={t('Export to PDF')}
-            imageMenuItemTitle={t('Download as Image')}
-            dashboardTitle={dashboardTitle}
-            addDangerToast={addDangerToast}
-          />
-        </Menu.SubMenu>
         {userCanShare && (
           <Menu.SubMenu
             key={MENU_KEYS.SHARE_DASHBOARD}
