@@ -129,11 +129,11 @@ const ExploreActionButtons = (props: ExploreActionButtonsProps) => {
       })
     : null;
 
-  const doExportJson = exportChart.bind(this, {
-    formData: latestQueryFormData,
-    resultType: 'results',
-    resultFormat: 'json',
-  });
+  // const doExportJson = exportChart.bind(this, {
+  //   formData: latestQueryFormData,
+  //   resultType: 'results',
+  //   resultFormat: 'json',
+  // });
 
   const exportToCSVClasses = cx('btn btn-default btn-sm', {
     disabled: !canDownloadCSV,
@@ -162,12 +162,12 @@ const ExploreActionButtons = (props: ExploreActionButtonsProps) => {
             onClick={doShareEmail}
           />
           <EmbedCodeButton latestQueryFormData={latestQueryFormData} />
-          <ActionButton
+          {/* <ActionButton
             icon={<Icons.FileTextOutlined iconSize="m" />}
             text=".JSON"
             tooltip={t('Export to .JSON format')}
             onClick={doExportJson}
-          />
+          /> */}
           <ActionButton
             icon={<Icons.FileExcelOutlined iconSize="m" />}
             text=".CSV"

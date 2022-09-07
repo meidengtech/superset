@@ -99,9 +99,9 @@ const ExploreAdditionalActionsMenu = props => {
               {t('Run in SQL Lab')}
             </Menu.Item>
           )}
-          <Menu.Item key={MENU_KEYS.DOWNLOAD_AS_IMAGE}>
+          {/* <Menu.Item key={MENU_KEYS.DOWNLOAD_AS_IMAGE}>
             {t('Download as image')}
-          </Menu.Item>
+          </Menu.Item> */}
         </Menu>
       }
     >

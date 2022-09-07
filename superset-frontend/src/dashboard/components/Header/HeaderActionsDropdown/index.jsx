@@ -309,11 +309,11 @@ class HeaderActionsDropdown extends React.PureComponent {
           </Menu.Item>
         )}
 
-        {!editMode && (
+        {/* {!editMode && (
           <Menu.Item key={MENU_KEYS.DOWNLOAD_AS_IMAGE}>
             {t('Download as image')}
           </Menu.Item>
-        )}
+        )} */}
 
         {!editMode && (
           <Menu.Item key={MENU_KEYS.TOGGLE_FULLSCREEN}>
