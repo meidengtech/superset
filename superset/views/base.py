@@ -20,7 +20,7 @@ import logging
 import traceback
 from datetime import datetime
 from typing import Any, Callable, cast, Dict, List, Optional, TYPE_CHECKING, Union
-
+from urllib import parse
 import simplejson as json
 import yaml
 from flask import (
@@ -166,7 +166,7 @@ def generate_download_headers(
     extension: str, filename: Optional[str] = None
 ) -> Dict[str, Any]:
     filename = filename if filename else datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = "【敏感禁传播】" + filename
+    filename = parse.quote("【敏感禁传播】".encode("utf-8")) + filename
     content_disp = f"attachment; filename={filename}.{extension}"
     headers = {"Content-Disposition": content_disp}
     return headers
@@ -259,9 +259,11 @@ def validate_sqlatable(table: models.SqlaTable) -> None:
 
 
 def create_table_permissions(table: models.SqlaTable) -> None:
-    security_manager.add_permission_view_menu("datasource_access", table.get_perm())
+    security_manager.add_permission_view_menu(
+        "datasource_access", table.get_perm())
     if table.schema:
-        security_manager.add_permission_view_menu("schema_access", table.schema_perm)
+        security_manager.add_permission_view_menu(
+            "schema_access", table.schema_perm)
 
 
 def get_user_roles() -> List[Role]:
@@ -525,7 +527,8 @@ class YamlExportMixin:  # pylint: disable=too-few-public-methods
         data = [t.export_to_dict() for t in items]
 
         return Response(
-            yaml.safe_dump({self.yaml_dict_key: data} if self.yaml_dict_key else data),
+            yaml.safe_dump({self.yaml_dict_key: data}
+                           if self.yaml_dict_key else data),
             headers=generate_download_headers("yaml"),
             mimetype="application/text",
         )
@@ -592,7 +595,8 @@ class DatasourceFilter(BaseFilter):  # pylint: disable=too-few-public-methods
     def apply(self, query: Query, value: Any) -> Query:
         if security_manager.can_access_all_datasources():
             return query
-        datasource_perms = security_manager.user_view_menu_names("datasource_access")
+        datasource_perms = security_manager.user_view_menu_names(
+            "datasource_access")
         schema_perms = security_manager.user_view_menu_names("schema_access")
         return query.filter(
             or_(
