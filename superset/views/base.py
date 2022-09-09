@@ -23,7 +23,7 @@ import os
 import traceback
 from datetime import datetime
 from typing import Any, Callable, cast
-
+from urllib import parse
 import simplejson as json
 import yaml
 from flask import (
@@ -186,7 +186,7 @@ def generate_download_headers(
     extension: str, filename: str | None = None
 ) -> dict[str, Any]:
     filename = filename if filename else datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = "【敏感禁传播】" + filename
+    filename = parse.quote("【敏感禁传播】".encode("utf-8")) + filename
     content_disp = f"attachment; filename={filename}.{extension}"
     headers = {"Content-Disposition": content_disp}
     return headers
@@ -606,7 +606,8 @@ class YamlExportMixin:  # pylint: disable=too-few-public-methods
         data = [t.export_to_dict() for t in items]
 
         return Response(
-            yaml.safe_dump({self.yaml_dict_key: data} if self.yaml_dict_key else data),
+            yaml.safe_dump({self.yaml_dict_key: data}
+                           if self.yaml_dict_key else data),
             headers=generate_download_headers("yaml"),
             mimetype="application/text",
         )
