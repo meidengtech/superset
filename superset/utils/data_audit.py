@@ -7,8 +7,7 @@ from superset import config
 
 logger = logging.getLogger(__name__)
 
-FILTER_PATH = ["login", "static", "welcome",
-               "csstemplateasyncmodelview", "dashboardasync"]
+FILTER_PATH = ["login", "static"]
 
 CONTINUE_PATH = ["api", "v1", "superset"]
 
@@ -114,6 +113,17 @@ PATH_TRANS_DESC = {
     "datasource": {
         "default": "数据集",
         "save": "保存",
+    },
+    "csstemplateasyncmodelview": {
+        "default": "css模板视图",
+        "read": "加载",
+    },
+    "welcome": {
+        "default": "登录",
+    },
+    "dashboardasync": {
+        "default": "看板",
+        "read": "异步加载",
     },
 }
 
