@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-x-superset-image: &superset-image apachesuperset.docker.scarf.sh/apache/superset:${TAG:-latest-dev}
+x-superset-image: &superset-image registry-vpc.cn-zhangjiakou.aliyuncs.com/meideng/superset:3.1.1
 x-superset-depends-on: &superset-depends-on
   - db
   - redis
@@ -38,8 +38,7 @@ services:
     container_name: superset_db
     restart: unless-stopped
     volumes:
-      - db_home:/var/lib/postgresql/data
-      - ./docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+      - db_home_pg15:/var/lib/postgresql/data
 
   superset:
     env_file: docker/.env-non-dev
@@ -95,7 +94,7 @@ services:
 volumes:
   superset_home:
     external: false
-  db_home:
+  db_home_pg15:
     external: false
   redis:
     external: false
