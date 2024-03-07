@@ -99,6 +99,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && flask fab babel-compile --target superset/translations \
     && chown -R superset:superset superset/translations
 
+## 修复 ADB 问题
+COPY ./overrides/reflection.py /usr/local/lib/python3.9/site-packages/sqlalchemy/dialects/mysql/reflection.py
+
 COPY --chmod=755 ./docker/run-server.sh /usr/bin/
 USER superset
 
