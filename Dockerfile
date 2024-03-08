@@ -63,7 +63,8 @@ ENV LANG=C.UTF-8 \
     SUPERSET_HOME="/app/superset_home" \
     SUPERSET_PORT=8088
 
-RUN sed -i -E "s@deb.debian.org@mirrors.corp.meideng.net@g" /etc/apt/sources.list.d/debian.sources
+RUN sed -i -E "s@deb.debian.org@mirrors.corp.meideng.net@g" /etc/apt/sources.list.d/debian.sources \
+    && pip config set global.index-url https://mirrors.bfsu.edu.cn/pypi/web/simple
 
 RUN mkdir -p ${PYTHONPATH} superset/static superset-frontend apache_superset.egg-info requirements \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
