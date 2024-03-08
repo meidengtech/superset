@@ -26,6 +26,8 @@ FROM --platform=${BUILDPLATFORM} node:16-bookworm-slim AS superset-node
 
 ARG NPM_BUILD_CMD="build"
 
+RUN sed -i -E "s@deb.debian.org@mirrors.corp.meideng.net@g" /etc/apt/sources.list.d/debian.sources
+
 RUN apt-get update -qq \
     && apt-get install -yqq --no-install-recommends \
         build-essential \
@@ -60,6 +62,8 @@ ENV LANG=C.UTF-8 \
     PYTHONPATH="/app/pythonpath" \
     SUPERSET_HOME="/app/superset_home" \
     SUPERSET_PORT=8088
+
+RUN sed -i -E "s@deb.debian.org@mirrors.corp.meideng.net@g" /etc/apt/sources.list.d/debian.sources
 
 RUN mkdir -p ${PYTHONPATH} superset/static superset-frontend apache_superset.egg-info requirements \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
