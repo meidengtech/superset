@@ -66,12 +66,23 @@ ENV LANG=C.UTF-8 \
 RUN sed -i -E "s@deb.debian.org@mirrors.corp.meideng.net@g" /etc/apt/sources.list.d/debian.sources \
     && pip config set global.index-url https://mirrors.bfsu.edu.cn/pypi/web/simple
 
+ARG MYSQL_APT_VER=0.8.29
+RUN apt-get update -qq \
+    && apt-get install -yqq --no-install-recommends \
+        lsb-release \
+        gnupg \
+        wget \
+    && wget -q https://dev.mysql.com/get/mysql-apt-config_${MYSQL_APT_VER}-1_all.deb \
+    && DEBIAN_FRONTEND=noninteractive dpkg -i mysql-apt-config_${MYSQL_APT_VER}-1_all.deb \
+    && apt-get update -qq && apt-get install -yqq libmysqlclient-dev \
+    && rm mysql-apt-config_${MYSQL_APT_VER}-1_all.deb \
+    && apt-get autoremove -yqq --purge gnupg wget && rm -rf /var/[log,tmp]/* /tmp/* /var/lib/apt/lists/*
+
 RUN mkdir -p ${PYTHONPATH} superset/static superset-frontend apache_superset.egg-info requirements \
     && useradd --user-group -d ${SUPERSET_HOME} -m --no-log-init --shell /bin/bash superset \
     && apt-get update -qq && apt-get install -yqq --no-install-recommends \
         build-essential \
         curl \
-        default-libmysqlclient-dev \
         libsasl2-dev \
         libsasl2-modules-gssapi-mit \
         libpq-dev \
